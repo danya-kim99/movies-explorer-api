@@ -58,7 +58,7 @@ module.exports.deleteMovie = (req, res, next) => {
       } else {
         return Movie.findByIdAndRemove(req.params.movieId)
           .then((deletedMovie) => {
-            res.send({ message: `Фильм ${deletedMovie._id} успешно удалена` });
+            res.send({ message: `Фильм ${deletedMovie._id} успешно удален` });
           });
       }
     })

@@ -1,9 +1,12 @@
 require('dotenv').config();
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const { errors } = require('celebrate');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const helmet = require('helmet');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+
 
 const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/not-found-err');
@@ -11,6 +14,13 @@ const NotFoundError = require('./errors/not-found-err');
 const { PORT = 3000 } = process.env;
 const app = express();
 
+const limiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: 100
+});
+
+app.use(limiter); 
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
