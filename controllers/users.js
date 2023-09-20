@@ -13,7 +13,7 @@ module.exports.getMe = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь с данным id не найден');
       }
-      res.send({ name: user.name, about: user.about, avatar: user.avatar });
+      res.send({ email: user.email, name: user.name });
     })
     .catch(next);
 };
