@@ -2,6 +2,7 @@
 
 Ссылка на репозиторий:
 https://github.com/danya-kim99/movies-explorer-api
+
 Приложение развернуто по адресу:
 https://api.diploma-movies-dkim.nomoredomainsrocks.ru/
 
