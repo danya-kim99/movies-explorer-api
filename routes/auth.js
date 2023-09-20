@@ -3,7 +3,6 @@ const { celebrate, Joi } = require('celebrate');
 const {
   login, createUser,
 } = require('../controllers/users');
-const regex = require('../utils/regex');
 
 router.post('/signin', celebrate({
   body: Joi.object().keys({

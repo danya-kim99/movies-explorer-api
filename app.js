@@ -7,7 +7,6 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-
 const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/not-found-err');
 
@@ -16,10 +15,10 @@ const app = express();
 
 const limiter = rateLimit({
   windowMs: 5 * 60 * 1000,
-  max: 100
+  max: 100,
 });
 
-app.use(limiter); 
+app.use(limiter);
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
