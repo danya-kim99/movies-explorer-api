@@ -3,8 +3,6 @@ const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const UnauthorizedError = require('../errors/unauthorized-err');
 
-const regex = require('../utils/regex');
-
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -23,9 +21,10 @@ const userSchema = new mongoose.Schema(
     },
     name: {
       type: String,
+      required: [true, 'Поле "name" должно быть заполнено'],
       minlength: [2, 'Минимальная длина поля "name" - 2'],
       maxlength: [30, 'Максимальная длина поля "name" - 30'],
-      default: 'Даниил',
+      default: 'Пользователь',
     },
   },
   { versionKey: false },

@@ -5,6 +5,8 @@ const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const AlreadyExistError = require('../errors/already-exist-err');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 module.exports.getMe = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
@@ -32,13 +34,14 @@ module.exports.patchUser = (req, res, next) => {
 
 module.exports.createUser = (req, res, next) => {
   const {
-    email, password
+    email, password, name,
   } = req.body;
 
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
       email,
       password: hash,
+      name,
     }), { runValidators: true })
     .then((user) => res.status(201).send({ _id: user._id }))
     .catch((err) => {
@@ -57,11 +60,8 @@ module.exports.login = (req, res, next) => {
 
   User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, '67bee4de13ac5c802aaa75ceea5f9db72ca74d5836ad4c74eb2f25780ece1a33', { expiresIn: '7d' });
-      res.cookie('jwt', token, {
-        maxAge: 3600000 * 24 * 7,
-        httpOnly: true,
-      }).send({ message: 'Добро пожаловать!' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
+      res.send({ token });
     })
     .catch(next);
 };
