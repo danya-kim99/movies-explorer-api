@@ -22,7 +22,12 @@ module.exports.patchUser = (req, res, next) => {
   const { email, name } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { email, name }, { new: true, runValidators: true })
-    .then((user) => res.send({ data: user }))
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Пользователь с данным id не найден');
+      }
+      res.send({ data: user })
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Невалидные параметры запроса'));

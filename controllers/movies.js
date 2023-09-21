@@ -4,10 +4,13 @@ const NoRightsError = require('../errors/no-rights-err');
 const NotFoundError = require('../errors/not-found-err');
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({})
-    .populate('owner')
-    .then((movies) => res.send({ data: movies }))
-    .catch(next);
+  Movie.find({owner: req.user._id})
+    .then((movies) => {
+      res.send({ data: movies })
+    })
+    .catch((err) => 
+        next(err)
+    );  
 };
 
 module.exports.createMovie = (req, res, next) => {
