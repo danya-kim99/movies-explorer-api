@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const rateLimit = require('express-rate-limit');
+const rateLimiter = require('./utils/rate-limiter')
 const { errors } = require('celebrate');
 const mongoose = require('mongoose');
 const router = require('./routes/router');
@@ -11,12 +11,7 @@ const { NODE_ENV, MONGO_ADDRESS, PORT = 3000 } = process.env;
 const dbAddress = NODE_ENV === 'production' ? MONGO_ADDRESS : '127.0.0.1:27017'
 const app = express();
 
-const limiter = rateLimit({
-  windowMs: 5 * 60 * 1000,
-  max: 100,
-});
-
-app.use(limiter);
+app.use(rateLimiter);
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
