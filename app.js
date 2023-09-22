@@ -1,14 +1,15 @@
 require('dotenv').config();
 const express = require('express');
-const rateLimiter = require('./utils/rate-limiter')
 const { errors } = require('celebrate');
 const mongoose = require('mongoose');
-const router = require('./routes/router');
 const cors = require('cors');
 const helmet = require('helmet');
+const router = require('./routes/router');
+const rateLimiter = require('./utils/rate-limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+
 const { NODE_ENV, MONGO_ADDRESS, PORT = 3000 } = process.env;
-const dbAddress = NODE_ENV === 'production' ? MONGO_ADDRESS : '127.0.0.1:27017'
+const dbAddress = NODE_ENV === 'production' ? MONGO_ADDRESS : '127.0.0.1:27017';
 const app = express();
 
 app.use(rateLimiter);

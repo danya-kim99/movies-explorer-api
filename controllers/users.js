@@ -26,7 +26,7 @@ module.exports.patchUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь с данным id не найден');
       }
-      res.send({ data: user })
+      res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
